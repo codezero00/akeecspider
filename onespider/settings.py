@@ -14,15 +14,35 @@ BOT_NAME = 'onespider'
 SPIDER_MODULES = ['onespider.spiders']
 NEWSPIDER_MODULE = 'onespider.spiders'
 
+#是否遵循机器人规则
+ROBOTSTXT_OBEY = False
+#默认是16，一次可以请求的最大次数
+CONCURRENT_REQUESTS=32
+#下载延迟
+DOWNLOAD_DELAY=0.1
+#Cookies设置
+COOKIES_ENABLED = False
+#headers设置
+DEFAULT_REQUEST_HEADERS = {
+'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+'Accept-Encoding':'gzip, deflate, sdch',
+'Accept-Language':'zh-CN,zh;q=0.8',
+'Cache-Control':'max-age=0',
+'Connection':'keep-alive',
+'User-Agent':'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
+
+#管道设置
+# ITEM_PIPELINES = {'onespider.pipelines.XiaohuaPipeline': 300}
+ITEM_PIPELINES = {'onespider.pipelines.MoviePipeline': 100}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'onespider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+# ROBOTSTXT_OBEY = True
 
 # 手动添加Begin
-ITEM_PIPELINES = {'onespider.pipelines.MoviePipeline':100}
+# ITEM_PIPELINES = {'onespider.pipelines.MoviePipeline':100}
 # 手动添加End
 
 

@@ -1,16 +1,76 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from onespider.items import OnespiderItem, MovieItem
+from onespider.items import OnespiderItem, MovieItem, XhItem
+from scrapy.http import Request
+import requests
+import re
+import os
+import sys
 
 class XhSpider(scrapy.Spider):
     name = 'xh'
-    allowed_domains = ['xiaohuar.com']
-    start_urls = ['http://www.meijutt.com/new100.html']
+    allowed_domains = ['mmonly.cc']
+    base = r'D:/xh/'
 
-    def parse(self, response):
-        print(response)
-        movies = response.xpath('//ul[@class="top-list  fn-clear"]/li')
-        for each_movie in movies:
-            item = MovieItem()
-            item['name']=each_movie.xpath('./h5/a/@title').extract()[0]
-            yield item
+    def start_requests(self):
+        # 一共有6页
+        for i in range(1, 7):
+            url = 'https://www.mmonly.cc/tag/xh1/' + str(i) + '.html'
+            yield Request(url, callback=self.parse_one)
+
+    def parse_one(self, response):
+        # 创建一个大的list存储所有的item
+        items = []
+        pattern = re.compile(r'<div class="title".*?<a.*?href="(.*?)">(.*?)</a></span></div>', re.S)
+        mains = re.findall(pattern, response.text)
+        for main in mains:
+            # 创建实例,并转化为字典
+            item = XhItem()
+            item['siteURL'] = main[0]
+            item['title'] = main[1]
+            item['fileName'] = self.base + item['title']
+            items.append(item)
+
+        for item in items:
+            # 创建文件夹
+            fileName = item['fileName']
+            if not os.path.exists(fileName):
+                os.makedirs(fileName)
+            # 用meta传入下一层
+            yield Request(url=item['siteURL'], meta={'item1': item}, callback=self.parse_two)
+
+    def parse_two(self, response):
+        # 传入上面的item1
+        item2 = response.meta['item1']
+        source = requests.get(response.url)
+        html = source.text.encode(source.encoding).decode('gbk')
+        print(html)
+        # 用正则提取页数
+        pattern = re.compile(r'共(.*?)页', re.S)
+        Num = re.search(pattern, html).group(1)
+        items = []
+        for i in range(1, int(Num) + 1):
+            # 注意这里，创建实例的位置
+            item = XhItem()
+            item['fileName'] = item2['fileName']
+            # 构造每一个图片的存储路径
+            item['path'] = item['fileName'] + '/' + str(i) + '.jpg'
+            # 构造每一个图片入口链接，以获取源码中的原图链接
+            item['pageURL'] = response.url[:-5] + '_' + str(i) + '.html'
+            items.append(item)
+        for item in items:
+            yield Request(url=item['pageURL'], meta={'item2': item}, callback=self.parse_three)
+
+    def parse_three(self, response):
+        item = XhItem()
+        # 传入上面的item2
+        item3 = response.meta['item2']
+        # 匹配正则获取图片真实地址detailURL
+        pattern = re.compile(
+            r'<li class="pic-down h-pic-down"><a target="_blank" class="down-btn" href=\'(.*?)\'>.*?</a>', re.S)
+        URL = re.search(pattern, response.text).group(1)
+        item['detailURL'] = URL
+        item['path'] = item3['path']
+        item['fileName'] = item3['fileName']
+        yield item
+
