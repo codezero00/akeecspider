@@ -29,3 +29,6 @@ class XhItem(scrapy.Item):
     title = scrapy.Field()  # MM标题
     fileName = scrapy.Field()  # 文件夹名，每一个MM一个文件夹
     path = scrapy.Field()  # 图片存储路径（绝对路径）
+
+class NSItem(scrapy.Item):
+    siteURL = scrapy.Field() # MM的url

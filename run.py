@@ -1,4 +1,4 @@
 
 
 from scrapy.cmdline import execute
-execute(['scrapy', 'crawl', 'xh'])
+execute(['scrapy', 'crawl', 'ns'])
