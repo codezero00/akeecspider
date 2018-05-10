@@ -31,4 +31,12 @@ class XhItem(scrapy.Item):
     path = scrapy.Field()  # 图片存储路径（绝对路径）
 
 class NSItem(scrapy.Item):
-    siteURL = scrapy.Field() # MM的url
+    __name__='nstime'
+    siteURL = scrapy.Field()  # MM的url
+    girlname = scrapy.Field()
+    girlimgurl = scrapy.Field()
+    girltable = scrapy.Field()
+    girldetail = scrapy.Field()
+    xzurl =scrapy.Field()  # 写真url
+    xzname = scrapy.Field()
+    xzdesc = scrapy.Field()

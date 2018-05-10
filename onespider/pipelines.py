@@ -53,9 +53,13 @@ class XiaohuaPipeline(object):
 #用requests的get方法获取图片并保存入文件
 class NSPipeline(object):
     def process_item(self, item, spider):
-        siteURL=item['siteURL']
-
-        print(u'正在保存URL：', siteURL)
-        with open('nsurl.txt', 'a') as f:
-            f.write(siteURL+'\n')
-        return item
+        print(item)
+        # print(item.name)
+        print(item.__name__)
+        print(spider)
+        # siteURL=item['siteURL']
+        #
+        # print(u'正在保存URL：', siteURL)
+        # with open('nsurl.txt', 'a') as f:
+        #     f.write(siteURL+'\n')
+        # return item
