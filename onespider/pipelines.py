@@ -7,6 +7,7 @@
 from onespider.db.models import *
 import requests
 
+
 class OnespiderPipeline(object):
     def process_item(self, item, spider):
         return item
@@ -34,32 +35,35 @@ class MoviePipeline(object):
         session.commit()
         session.close()
 
-#用requests的get方法获取图片并保存入文件
+
+# 用requests的get方法获取图片并保存入文件
 class XiaohuaPipeline(object):
     def process_item(self, item, spider):
-        detailURL=item['detailURL']
-        path=item['path']
-        fileName=item['fileName']
+        detailURL = item['detailURL']
+        path = item['path']
+        fileName = item['fileName']
 
-        image=requests.get(detailURL)
-        f=open(path,'wb')
+        image = requests.get(detailURL)
+        f = open(path, 'wb')
         f.write(image.content)
         f.close()
-        print(u'正在保存图片：',detailURL)
-        print(u'图片路径：',path)
-        print(u'文件：',fileName)
+        print(u'正在保存图片：', detailURL)
+        print(u'图片路径：', path)
+        print(u'文件：', fileName)
         return item
 
-#用requests的get方法获取图片并保存入文件
+
+# 用requests的get方法获取图片并保存入文件
 class NSPipeline(object):
     def process_item(self, item, spider):
-        print(item)
-        # print(item.name)
-        print(item.__name__)
-        print(spider)
-        # siteURL=item['siteURL']
-        #
-        # print(u'正在保存URL：', siteURL)
-        # with open('nsurl.txt', 'a') as f:
-        #     f.write(siteURL+'\n')
-        # return item
+        if spider.name == 'ns':
+            if item.name == 'NSGirlItem':
+                print(item)
+                print(item.name)
+                print(spider)
+            # siteURL=item['siteURL']
+            #
+            # print(u'正在保存URL：', siteURL)
+            # with open('nsurl.txt', 'a') as f:
+            #     f.write(siteURL+'\n')
+            # return item

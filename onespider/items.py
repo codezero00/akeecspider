@@ -30,13 +30,22 @@ class XhItem(scrapy.Item):
     fileName = scrapy.Field()  # 文件夹名，每一个MM一个文件夹
     path = scrapy.Field()  # 图片存储路径（绝对路径）
 
-class NSItem(scrapy.Item):
-    __name__='nstime'
+class NSGirlItem(scrapy.Item):
+    name = 'NSGirlItem'
     siteURL = scrapy.Field()  # MM的url
-    girlname = scrapy.Field()
-    girlimgurl = scrapy.Field()
-    girltable = scrapy.Field()
-    girldetail = scrapy.Field()
-    xzurl =scrapy.Field()  # 写真url
-    xzname = scrapy.Field()
-    xzdesc = scrapy.Field()
+    girlname = scrapy.Field()  # 姓名
+    girlimgurl = scrapy.Field()  # 图片url
+    girltable = scrapy.Field()  # table
+    girldetail = scrapy.Field()  #描述
+    # xzurl =scrapy.Field()  # 写真url
+    # xzname = scrapy.Field()
+    # xzdesc = scrapy.Field()
+
+class NSAlbumsItem(scrapy.Item):
+    name = 'NSAlbumsItem'
+    xzurl =scrapy.Field()  # 写真集url
+    xzname = scrapy.Field()  # 写真集名称
+    xzdesc = scrapy.Field()  # 写真集描述
+    xzimgurl = scrapy.Field()  # 写真集图片url
+    xztags = scrapy.Field()  # 写真tag
+    xzimgs = scrapy.Field() # 写真图片list
