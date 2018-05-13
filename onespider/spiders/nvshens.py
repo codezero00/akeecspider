@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from onespider.items import NSGirlItem, NSAlbumsItem
+from onespider.items import NSGirlItem, NSAlbumsItem, NSPhotoListItem
 from scrapy.http import Request
 import re
 
@@ -76,3 +76,16 @@ class MeijuSpider(scrapy.Spider):
         xzitem['xzdesc'] = response.xpath('//*[@id="ddesc"]/text()').extract()[0]
         xzitem['xztags'] = response.xpath('//*[@id="utag"]/li/a/text()').extract()
         print(xzitem)
+        for i in range(1,15):
+            photourl = xzitem['xzurl']+str(i)+'.html'
+            yield Request(photourl, meta={'xzitem': xzitem}, callback=self.parse_3)
+
+    def parse_3(self, response):
+        photoimgurllist = response.xpath('//*[@id="hgallery"]/img/@src').extract()
+        print(photoimgurllist)
+        xzitem = response.meta['xzitem']
+        imgitem = NSPhotoListItem()
+        for i in photoimgurllist:
+            imgitem['xzname'] = xzitem['xzname']
+            imgitem['xzimgs'] = i
+            yield  imgitem

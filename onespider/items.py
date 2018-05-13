@@ -48,4 +48,9 @@ class NSAlbumsItem(scrapy.Item):
     xzdesc = scrapy.Field()  # 写真集描述
     xzimgurl = scrapy.Field()  # 写真集图片url
     xztags = scrapy.Field()  # 写真tag
+    # xzimgs = scrapy.Field() # 写真图片list
+
+class NSPhotoListItem(scrapy.Item):
+    name = 'NSPhotoListItem'
+    xzname =scrapy.Field()  # 写真集名称
     xzimgs = scrapy.Field() # 写真图片list
