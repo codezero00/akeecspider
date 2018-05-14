@@ -8,6 +8,8 @@ from onespider.db.models import *
 import requests
 import uuid
 
+global autoid
+autoid  = (x for x in range(10))
 
 class OnespiderPipeline(object):
     def process_item(self, item, spider):
@@ -75,12 +77,16 @@ class NSPipeline(object):
                 print(item)
                 print(item.name)
                 print(spider)
-                path = r'D:/xh/'+item['xzname']+str(uuid.uuid1())+'.jpg'
-                # print(path)
-                image = requests.get(url=item['xzimgs'], headers=headers)
-                f = open(path, 'wb')
-                f.write(image.content)
-                f.close()
+                # path = r'D:/xh/'+item['xzname']+str(uuid.uuid1())+'.jpg'
+                path = r'D:/xh/' + item['xzname'] + str(next(autoid)) + '.jpg'
+                print(path)
+
+                # image = requests.get(url=item['xzimgs'], headers=headers)
+                # f = open(path, 'wb')
+                # f.write(image.content)
+                # f.close()
+
+
             # siteURL=item['siteURL']
             #
             # print(u'正在保存URL：', siteURL)
