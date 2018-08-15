@@ -13,6 +13,11 @@ class OnespiderItem(scrapy.Item):
     # name = scrapy.Field()
     name = scrapy.Field()
 
+class BaiduTrashItem(scrapy.Item):
+    __name__ = 'baidutrashitem'
+
+    url = scrapy.Field()
+
 class MovieItem(scrapy.Item):
     name = scrapy.Field()
     url = scrapy.Field()

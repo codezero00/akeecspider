@@ -9,7 +9,7 @@ import requests
 import uuid
 
 global autoid
-autoid  = (x for x in range(10))
+autoid  = (x for x in range(1000))
 
 class OnespiderPipeline(object):
     def process_item(self, item, spider):
@@ -93,3 +93,34 @@ class NSPipeline(object):
             # with open('nsurl.txt', 'a') as f:
             #     f.write(siteURL+'\n')
             # return item
+
+
+# 用requests的get方法获取图片并保存入文件
+class baiduPipeline(object):
+    """
+    E:\downloaddata
+    """
+    def process_item(self, item, spider):
+        if spider.name == 'baidu':
+            if item.__name__ == 'baidutrashitem':
+                print(item)
+                print(item.__name__)
+                print(spider)
+                headers = {
+                    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Encoding':'gzip, deflate, sdch',
+                    'Accept-Language':'zh-CN,zh;q=0.8',
+                    'Cache-Control':'max-age=0',
+                    'Referer': 'https://www.nvshens.com',
+                    'Connection':'keep-alive',
+                    'User-Agent':'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
+                # path = r'D:/xh/'+item['xzname']+str(uuid.uuid1())+'.jpg'
+                path = r'E:/downloaddata/' + str(next(autoid)) + '.jpg'
+                print(path)
+
+                image = requests.get(url=item['url'], headers=headers)
+                # f = open(path, 'wb')
+                # f.write(image.content)
+                # f.close()
+                with open(path, 'wb') as f:
+                    f.write(image.content)

@@ -76,7 +76,7 @@ class MeijuSpider(scrapy.Spider):
         xzitem['xzdesc'] = response.xpath('//*[@id="ddesc"]/text()').extract()[0]
         xzitem['xztags'] = response.xpath('//*[@id="utag"]/li/a/text()').extract()
         print(xzitem)
-        for i in range(1,15):
+        for i in range(1, 15):
             photourl = xzitem['xzurl']+str(i)+'.html'
             yield Request(photourl, meta={'xzitem': xzitem}, callback=self.parse_3)
 
