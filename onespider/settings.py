@@ -35,8 +35,8 @@ DEFAULT_REQUEST_HEADERS = {
 #管道设置
 # ITEM_PIPELINES = {'onespider.pipelines.XiaohuaPipeline': 300}
 # ITEM_PIPELINES = {'onespider.pipelines.MoviePipeline': 100}
-# ITEM_PIPELINES = {'onespider.pipelines.NSPipeline': 100}
-ITEM_PIPELINES = {'onespider.pipelines.baiduPipeline': 100}
+ITEM_PIPELINES = {'onespider.pipelines.NSPipeline': 100}
+# ITEM_PIPELINES = {'onespider.pipelines.baiduPipeline': 100}
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

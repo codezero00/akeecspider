@@ -37,7 +37,7 @@ import uuid
 
 # 创建对象的基类:
 Base = declarative_base()
-engine = create_engine('mysql+pymysql://root:zhangjun@localhost/scrspider?charset=utf8')
+engine = create_engine('mysql+pymysql://root:root@localhost/scrspider?charset=utf8')
 DBSession = sessionmaker(bind=engine)
 
 def next_id():
@@ -54,6 +54,26 @@ class MovieList(Base):
     tvstation = Column(String(200))
     updatetime = Column(String(200))
 
+
+class t_zngirls_info(Base):
+    __tablename__ = 't_zngirls_info'
+
+    id = Column(String(200), primary_key=True)
+    url = Column(String(200))
+    photourl = Column(String(200))
+    ms = Column(String(2000))
+    name = Column(String(200))
+    bname = Column(String(200))
+    blood = Column(String(200))
+    height = Column(String(200))
+    weight = Column(String(200))
+    bwh = Column(String(200))
+    birthday = Column(String(200))
+    age = Column(String(200))
+    xz = Column(String(200))
+    birthaddr = Column(String(200))
+    job = Column(String(200))
+    hobby = Column(String(200))
 
 if __name__ == "__main__":
     session = DBSession()

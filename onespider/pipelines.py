@@ -9,7 +9,8 @@ import requests
 import uuid
 
 global autoid
-autoid  = (x for x in range(1000))
+autoid = (x for x in range(1000))
+
 
 class OnespiderPipeline(object):
     def process_item(self, item, spider):
@@ -67,13 +68,13 @@ class NSPipeline(object):
                 print(spider)
             if item.name == 'NSPhotoListItem':
                 headers = {
-                    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                    'Accept-Encoding':'gzip, deflate, sdch',
-                    'Accept-Language':'zh-CN,zh;q=0.8',
-                    'Cache-Control':'max-age=0',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Encoding': 'gzip, deflate, sdch',
+                    'Accept-Language': 'zh-CN,zh;q=0.8',
+                    'Cache-Control': 'max-age=0',
                     'Referer': 'https://www.nvshens.com',
-                    'Connection':'keep-alive',
-                    'User-Agent':'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
+                    'Connection': 'keep-alive',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
                 print(item)
                 print(item.name)
                 print(spider)
@@ -86,13 +87,36 @@ class NSPipeline(object):
                 # f.write(image.content)
                 # f.close()
 
+            if item.name == 'NSItem':
+                siteURL = item['siteURL']
 
-            # siteURL=item['siteURL']
-            #
-            # print(u'正在保存URL：', siteURL)
-            # with open('nsurl.txt', 'a') as f:
-            #     f.write(siteURL+'\n')
-            # return item
+                print(u'正在保存URL：', siteURL)
+                with open('nsurl.txt', 'a') as f:
+                    f.write(siteURL + '\n')
+                # return item
+        elif spider.name == 'ns2':
+            if item.name == 'NSTableItem':
+                session = DBSession()
+                newmovie = t_zngirls_info(id=next_id(),
+                                          url=item['item_url'],
+                                          photourl=item['item_photourl'],
+                                          ms=item['item_ms'],
+                                          name=item['item_name'],
+                                          bname=item['item_bname'],
+                                          blood=item['item_blood'],
+                                          height=item['item_height'],
+                                          weight=item['item_weight'],
+                                          bwh=item['item_bwh'],
+                                          birthday=item['item_birthday'],
+                                          age=item['item_age'],
+                                          xz=item['item_xz'],
+                                          birthaddr=item['item_birthaddr'],
+                                          job=item['item_job'],
+                                          hobby=item['item_hobby']
+                                          )
+                session.add(newmovie)
+                session.commit()
+                session.close()
 
 
 # 用requests的get方法获取图片并保存入文件
@@ -100,6 +124,7 @@ class baiduPipeline(object):
     """
     E:\downloaddata
     """
+
     def process_item(self, item, spider):
         if spider.name == 'baidu':
             if item.__name__ == 'baidutrashitem':
@@ -107,13 +132,13 @@ class baiduPipeline(object):
                 print(item.__name__)
                 print(spider)
                 headers = {
-                    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                    'Accept-Encoding':'gzip, deflate, sdch',
-                    'Accept-Language':'zh-CN,zh;q=0.8',
-                    'Cache-Control':'max-age=0',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'Accept-Encoding': 'gzip, deflate, sdch',
+                    'Accept-Language': 'zh-CN,zh;q=0.8',
+                    'Cache-Control': 'max-age=0',
                     'Referer': 'https://www.nvshens.com',
-                    'Connection':'keep-alive',
-                    'User-Agent':'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
+                    'Connection': 'keep-alive',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
                 # path = r'D:/xh/'+item['xzname']+str(uuid.uuid1())+'.jpg'
                 path = r'E:/downloaddata/' + str(next(autoid)) + '.jpg'
                 print(path)

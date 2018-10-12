@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from onespider.items import NSGirlItem, NSAlbumsItem, NSPhotoListItem
+from onespider.items import NSGirlItem, NSAlbumsItem, NSPhotoListItem, NSItem
 from scrapy.http import Request
 import re
 
@@ -23,13 +23,21 @@ class MeijuSpider(scrapy.Spider):
     # def parse(self, response):
     #     pattern = re.compile(r'<loc>(.*?)</loc>', re.S)
     #     girls = re.findall(pattern, response.text)
+    #
     #     # girls = response.xpath('1/2/3')
     #     for each_girl in girls:
     #         item = NSItem()
     #         item['siteURL'] = each_girl
     #         yield Request(each_girl, callback=self.parse_2)
 
+
+
+
     def start_requests(self):
+        """
+        start capture from nsurl
+        :return:
+        """
         siteurls = []
         with open('nsurl.txt', 'r') as f:
             siteurls = f.read().split('\n')
@@ -38,6 +46,11 @@ class MeijuSpider(scrapy.Spider):
             yield Request(url, callback=self.parse_1)
 
     def parse_1(self, response):
+        """
+        page person
+        :param response:
+        :return:
+        """
         # items=[]
         item = NSGirlItem()
         item["girlname"] = response.xpath('//*[@id="post"]/div[2]/div/div[1]/h1/text()').extract()[0]
@@ -47,13 +60,10 @@ class MeijuSpider(scrapy.Spider):
         # items.append(item)
         # xzurls = response.xpath('//*[@id="post"]/div[8]/div/div[3]/ul/li/div[1]/a/@href').extract()
         elements = response.xpath('//*[@class="igalleryli"]')
-        # print(elements.text)
         yield item
         for element in elements:
-            # print(element)
             xzitem = NSAlbumsItem()
             url = element.xpath('./div[1]/a/@href').extract()[0]
-            # print(url)
             xzurl = 'https://www.nvshens.com' + url
             xztitle = element.xpath('//img/@title').extract()[0]
             xzimgurl = element.xpath('//img/@data-original').extract()[0]
@@ -89,3 +99,4 @@ class MeijuSpider(scrapy.Spider):
             imgitem['xzname'] = xzitem['xzname']
             imgitem['xzimgs'] = i
             yield  imgitem
+
